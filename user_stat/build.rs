@@ -53,7 +53,7 @@ fn main() -> anyhow::Result<()> {
                 "../protos/user_stats/messages.proto",
                 "../protos/user_stats/rpc.proto",
             ],
-            &["../protos/user_stats"],
+            &["../protos"],
         )?;
 
     Ok(())

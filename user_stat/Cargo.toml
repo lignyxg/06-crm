@@ -1,0 +1,33 @@
+[package]
+name = "user_stat"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = { workspace = true }
+chrono = { workspace = true }
+derive_builder = { workspace = true }
+futures = "0.3.30"
+itertools = "0.13.0"
+prost = { workspace = true }
+prost-build = { workspace = true }
+prost-types = { workspace = true }
+proto-builder-trait = { version = "0.6.1", features = ["tonic"] }
+rand = "0.8.5"
+serde = { workspace = true }
+serde_yaml = { workspace = true }
+sqlx = { workspace = true }
+tokio = { workspace = true }
+tonic = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+[build-dependencies]
+anyhow = { workspace = true }
+#prost-build = { workspace = true }
+proto-builder-trait = "0.6.1"
+tonic-build = { workspace = true }
+
+[dev-dependencies]
+fake = { version = "2.9.2", features = ["derive", "chrono"] }
+nanoid = "0.4.0"

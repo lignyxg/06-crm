@@ -14,15 +14,17 @@ name = "client"
 path = "src/client.rs"
 
 [dependencies]
-anyhow = {workspace = true}
-prost = {workspace = true}
-prost-build = {workspace = true}
-prost-types = {workspace = true}
-tokio = { version = "1.39.3", features = ["rt-multi-thread"] }
-tonic = {workspace = true}
+anyhow = { workspace = true }
+prost = { workspace = true }
+prost-build = { workspace = true }
+prost-types = { workspace = true }
+tokio = { workspace = true }
+tonic = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
 
 
 [build-dependencies]
-anyhow = {workspace = true}
-prost-build = {workspace = true}
-tonic-build = {workspace = true}
+anyhow = { workspace = true }
+prost-build = { workspace = true }
+tonic-build = { workspace = true }

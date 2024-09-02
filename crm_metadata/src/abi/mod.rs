@@ -30,7 +30,7 @@ impl MetadataService {
                 let id = req.id;
                 // generate dummy content
                 let content = Content::new(id);
-                // send to client
+                // Send to client
                 tx.send(Ok(content)).await.unwrap();
             }
         });
@@ -104,7 +104,7 @@ mod tests {
             ]
             .into_iter(),
         );
-        // send request
+        // Send request
         let mut resp_stream = svc.materialize(stream).await?.into_inner();
         while let Some(Ok(material)) = resp_stream.next().await {
             println!("material: {:#?}", material);

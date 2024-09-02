@@ -4,3 +4,27 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+anyhow = { workspace = true }
+chrono = { workspace = true }
+derive_builder = { workspace = true }
+fake = { version = "2.9.2", features = ["derive", "chrono"] }
+futures = { workspace = true }
+itertools = { workspace = true }
+prost = { workspace = true }
+prost-build = { workspace = true }
+prost-types = { workspace = true }
+proto-builder-trait = { version = "0.6.1", features = ["tonic"] }
+rand = "0.8.5"
+serde = { workspace = true }
+serde_yaml = { workspace = true }
+sqlx = { workspace = true }
+tokio = { workspace = true }
+tonic = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+log = "0.4.22"
+
+[build-dependencies]
+anyhow = { workspace = true }
+proto-builder-trait = "0.6.1"
+tonic-build = { workspace = true }

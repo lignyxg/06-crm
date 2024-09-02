@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package notification;
+
+import "google/protobuf/timestamp.proto";
+
+// SendRequest
+message SendRequest {
+    uint32 id = 1;
+    oneof msg {
+        EmailMessage email = 2;
+        SmsMessage sms = 3;
+        InAppMessage in_app = 4;
+    }
+}
+// email message
+message EmailMessage {
+    string subject = 1;
+    string sender = 2;
+    repeated string recipients = 3;
+    string body = 4;
+}
+
+message SmsMessage {
+    string sender = 1;
+    repeated string recipients = 2;
+    string body = 3;
+}
+
+message InAppMessage {
+    string device_id = 1;
+    string title = 2;
+    string body = 3;
+}
+
+message SendResponse {
+    uint32 id = 1;
+    google.protobuf.Timestamp created_at = 2;
+}

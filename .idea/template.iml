@@ -9,6 +9,9 @@
       <sourceFolder url="file://$MODULE_DIR$/crm_metadata/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crm_send/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/metadata/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crm_metadata/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/crm_send/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/user_stat/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

@@ -3,11 +3,15 @@ name = "crm_send"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = []
+test-util = ["fake"]
+
 [dependencies]
 anyhow = { workspace = true }
 chrono = { workspace = true }
 derive_builder = { workspace = true }
-fake = { version = "2.9.2", features = ["derive", "chrono"] }
+fake = { version = "2.9.2", features = ["derive", "chrono"], optional = true }
 futures = { workspace = true }
 itertools = { workspace = true }
 prost = { workspace = true }
@@ -28,3 +32,6 @@ log = "0.4.22"
 anyhow = { workspace = true }
 proto-builder-trait = "0.6.1"
 tonic-build = { workspace = true }
+
+[dev-dependencies]
+crm_send = { workspace = true, features = ["test-util"] }

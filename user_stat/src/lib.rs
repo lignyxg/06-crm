@@ -44,3 +44,17 @@ impl UserStats for UserStatsService {
         self.raw_query(request.into_inner()).await
     }
 }
+
+#[cfg(feature = "test-util")]
+pub mod test_util {
+    use chrono::{Days, Utc};
+    use prost_types::Timestamp;
+
+    pub fn to_ts(days: u64) -> Timestamp {
+        let now = Utc::now().checked_sub_days(Days::new(days)).unwrap();
+        Timestamp {
+            seconds: now.timestamp(),
+            nanos: now.timestamp_subsec_nanos() as i32,
+        }
+    }
+}

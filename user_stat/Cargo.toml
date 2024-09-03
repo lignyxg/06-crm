@@ -3,6 +3,10 @@ name = "user_stat"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = []
+test-util = []
+
 [dependencies]
 anyhow = { workspace = true }
 chrono = { workspace = true }
@@ -31,3 +35,4 @@ tonic-build = { workspace = true }
 [dev-dependencies]
 fake = { version = "2.9.2", features = ["derive", "chrono"] }
 nanoid = "0.4.0"
+user_stat = { workspace = true, features = ["test-util"] }

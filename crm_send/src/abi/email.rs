@@ -29,7 +29,7 @@ impl From<EmailMessage> for Msg {
     }
 }
 
-#[cfg(test)]
+#[cfg(feature = "test-util")]
 impl EmailMessage {
     pub fn new() -> Self {
         use fake::faker::internet::en::SafeEmail;

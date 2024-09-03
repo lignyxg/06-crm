@@ -29,7 +29,7 @@ impl From<SmsMessage> for Msg {
     }
 }
 
-#[cfg(test)]
+#[cfg(feature = "test-util")]
 impl SmsMessage {
     pub fn new() -> Self {
         use fake::faker::lorem::zh_cn::Sentence;

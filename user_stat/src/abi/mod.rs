@@ -121,10 +121,9 @@ fn id_query(k: &str, v: &IdQuery) -> String {
 #[cfg(test)]
 mod tests {
     use anyhow::Result;
-    use chrono::{Days, Utc};
     use futures::StreamExt;
-    use prost_types::Timestamp;
 
+    use crate::test_util::to_ts;
     use crate::{pb, AppConfig, UserStatsService};
 
     // #[test]
@@ -146,14 +145,6 @@ mod tests {
     //     println!("sql: {}", sql);
     //     Ok(())
     // }
-
-    fn to_ts(days: u64) -> Timestamp {
-        let now = Utc::now().checked_sub_days(Days::new(days)).unwrap();
-        Timestamp {
-            seconds: now.timestamp(),
-            nanos: now.timestamp_subsec_nanos() as i32,
-        }
-    }
 
     #[tokio::test]
     async fn test_raw_query() -> Result<()> {

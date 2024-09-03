@@ -364,6 +364,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "chrono",
+ "crm_send",
  "derive_builder",
  "fake",
  "futures",
@@ -2507,6 +2508,7 @@ dependencies = [
  "tonic-build",
  "tracing",
  "tracing-subscriber",
+ "user_stat",
 ]
 
 [[package]]

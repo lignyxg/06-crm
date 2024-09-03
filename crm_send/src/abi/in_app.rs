@@ -29,7 +29,7 @@ impl From<InAppMessage> for Msg {
     }
 }
 
-#[cfg(test)]
+#[cfg(feature = "test-util")]
 impl InAppMessage {
     pub fn new() -> Self {
         use fake::faker::internet::en::MACAddress;

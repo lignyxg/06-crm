@@ -8,7 +8,10 @@ use sqlx::PgPool;
 use tonic::Response;
 
 use crate::pb::user_stats_server::UserStatsServer;
-use crate::pb::{IdQuery, QueryRequest, RawQueryRequest, TimeQuery, User};
+use crate::pb::{
+    IdQuery, QueryRequest, QueryRequestBuilder, RawQueryRequest, TimeQuery, TimeQueryBuilder, User,
+};
+use crate::test_util::to_ts;
 use crate::{AppConfig, ResponseStream, ServiceResult, UserStatsService, UserStatsServiceInner};
 
 impl UserStatsService {
@@ -52,8 +55,11 @@ impl UserStatsService {
             .join(" AND ");
 
         sql.push_str(&time_conds);
-        sql.push_str(" AND ");
+        if req.ids.is_empty() {
+            return sql;
+        }
 
+        sql.push_str(" AND ");
         let id_conds = req.ids.iter().map(|(k, v)| id_query(k, v)).join(" AND ");
 
         sql.push_str(&id_conds);
@@ -118,6 +124,22 @@ fn id_query(k: &str, v: &IdQuery) -> String {
     format!("array{:?} <@ {}", v.ids, k)
 }
 
+impl QueryRequest {
+    pub fn new_with_interval(interval: u32) -> Self {
+        QueryRequestBuilder::default()
+            .timestamp_builder((
+                "created_at".to_string(),
+                TimeQueryBuilder::default()
+                    .lower(to_ts((interval + 1) as _))
+                    .upper(to_ts(interval as _))
+                    .build()
+                    .expect("timestamp builder failed"),
+            ))
+            .build()
+            .expect("QueryRequest builder failed")
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use anyhow::Result;
@@ -126,25 +148,25 @@ mod tests {
     use crate::test_util::to_ts;
     use crate::{pb, AppConfig, UserStatsService};
 
-    // #[test]
-    // fn test_query_sql() -> Result<()> {
-    //     let req = pb::QueryRequestBuilder::default()
-    //         .timestamp_builder((
-    //             "created_at".to_string(),
-    //             pb::TimeQueryBuilder::default()
-    //                 .lower(to_ts(10))
-    //                 .upper(to_ts(20))
-    //                 .build()?,
-    //         ))
-    //         .id_builder((
-    //             "viewed_but_not_started".to_string(),
-    //             pb::IdQueryBuilder::default().ids(vec![1, 2]).build()?,
-    //         ))
-    //         .build()?;
-    //     let sql = UserStatsService::query_sql(req);
-    //     println!("sql: {}", sql);
-    //     Ok(())
-    // }
+    #[test]
+    fn test_query_sql() -> Result<()> {
+        let req = pb::QueryRequestBuilder::default()
+            .timestamp_builder((
+                "created_at".to_string(),
+                pb::TimeQueryBuilder::default()
+                    .lower(to_ts(10))
+                    .upper(to_ts(20))
+                    .build()?,
+            ))
+            .id_builder((
+                "viewed_but_not_started".to_string(),
+                pb::IdQueryBuilder::default().ids(vec![1, 2]).build()?,
+            ))
+            .build()?;
+        let sql = UserStatsService::query_sql(req);
+        println!("sql: {}", sql);
+        Ok(())
+    }
 
     #[tokio::test]
     async fn test_raw_query() -> Result<()> {

@@ -3,8 +3,8 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendRequest {
-    #[prost(uint32, tag = "1")]
-    pub id: u32,
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
     #[prost(oneof = "send_request::Msg", tags = "2, 3, 4")]
     pub msg: ::core::option::Option<send_request::Msg>,
 }
@@ -57,8 +57,8 @@ pub struct InAppMessage {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendResponse {
-    #[prost(uint32, tag = "1")]
-    pub id: u32,
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "2")]
     pub created_at: ::core::option::Option<::prost_types::Timestamp>,
 }

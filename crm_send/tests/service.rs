@@ -1,14 +1,14 @@
 use std::net::SocketAddr;
 use std::time::Duration;
 
+use crm_send::pb::notification_client::NotificationClient;
+use crm_send::pb::{EmailMessage, InAppMessage, SendRequest, SmsMessage};
+use crm_send::{AppConfig, NotificationService};
 use futures::StreamExt;
 use tokio::time::sleep;
 use tonic::codegen::tokio_stream;
 use tonic::Request;
-
-use crm_send::pb::notification_client::NotificationClient;
-use crm_send::pb::{EmailMessage, InAppMessage, SendRequest, SmsMessage};
-use crm_send::{AppConfig, NotificationService};
+use uuid::Uuid;
 
 #[tokio::test]
 async fn send_should_work() -> anyhow::Result<()> {
@@ -17,15 +17,15 @@ async fn send_should_work() -> anyhow::Result<()> {
     let stream = tokio_stream::iter(
         vec![
             SendRequest {
-                id: 1,
+                id: Uuid::new_v4().to_string(),
                 msg: Some(EmailMessage::new().into()),
             },
             SendRequest {
-                id: 2,
+                id: Uuid::new_v4().to_string(),
                 msg: Some(SmsMessage::new().into()),
             },
             SendRequest {
-                id: 3,
+                id: Uuid::new_v4().to_string(),
                 msg: Some(InAppMessage::new().into()),
             },
         ]

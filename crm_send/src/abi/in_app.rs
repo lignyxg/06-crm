@@ -8,7 +8,7 @@ use crate::NotificationService;
 impl Sender for InAppMessage {
     async fn send(
         self,
-        msg_id: u32,
+        msg_id: String,
         by: &NotificationService,
     ) -> Result<SendResponse, tonic::Status> {
         let snd = by.sender_svc.clone();

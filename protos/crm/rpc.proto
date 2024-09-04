@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package crm;
+
+import "crm/messages.proto";
+
+service Crm {
+    // user has registered X days ago
+    rpc Welcome (WelcomeRequest) returns (WelcomeResponse) {}
+    // last visited or watched in X days
+    rpc Recall (RecallRequest) returns (RecallResponse) {}
+    // last watched in X days, user still have unfinished contents
+    rpc Remind (RemindRequest) returns (RemindResponse) {}
+}

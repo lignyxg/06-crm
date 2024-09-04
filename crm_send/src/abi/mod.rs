@@ -8,11 +8,12 @@ use tokio::sync::mpsc;
 use tonic::codegen::tokio_stream::wrappers::ReceiverStream;
 use tonic::{Response, Status};
 use tracing::{info, warn};
+use uuid::Uuid;
 
 use crate::pb::notification_server::NotificationServer;
 use crate::pb::send_request::Msg;
 use crate::pb::send_request::Msg::{Email, InApp, Sms};
-use crate::pb::{SendRequest, SendResponse};
+use crate::pb::{EmailMessage, InAppMessage, SendRequest, SendResponse, SmsMessage};
 use crate::{
     AppConfig, NotificationService, NotificationServiceInner, ResponseStream, ServiceResult,
 };
@@ -92,15 +93,68 @@ pub fn to_ts() -> Timestamp {
 trait Sender {
     async fn send(
         self,
-        msg_id: u32,
+        msg_id: String,
         by: &NotificationService,
     ) -> Result<SendResponse, tonic::Status>;
+}
+
+impl SendRequest {
+    pub fn new_email(
+        subject: impl Into<String>,
+        sender: impl Into<String>,
+        recipients: &[String],
+        body: impl Into<String>,
+    ) -> Self {
+        let msg = EmailMessage {
+            subject: subject.into(),
+            sender: sender.into(),
+            recipients: recipients.to_vec(),
+            body: body.into(),
+        };
+        Self {
+            id: Uuid::new_v4().to_string(),
+            msg: Some(msg.into()),
+        }
+    }
+
+    pub fn new_sms(
+        sender: impl Into<String>,
+        recipients: &[String],
+        body: impl Into<String>,
+    ) -> Self {
+        let msg = SmsMessage {
+            sender: sender.into(),
+            recipients: recipients.to_vec(),
+            body: body.into(),
+        };
+        Self {
+            id: Uuid::new_v4().to_string(),
+            msg: Some(msg.into()),
+        }
+    }
+
+    pub fn new_in_app(
+        device_id: impl Into<String>,
+        title: impl Into<String>,
+        body: impl Into<String>,
+    ) -> Self {
+        let msg = InAppMessage {
+            device_id: device_id.into(),
+            title: title.into(),
+            body: body.into(),
+        };
+        Self {
+            id: Uuid::new_v4().to_string(),
+            msg: Some(msg.into()),
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use futures::StreamExt;
     use tonic::codegen::tokio_stream;
+    use uuid::Uuid;
 
     use crate::pb::{EmailMessage, InAppMessage, SendRequest, SmsMessage};
     use crate::{AppConfig, NotificationService};
@@ -111,15 +165,15 @@ mod tests {
         let stream = tokio_stream::iter(
             vec![
                 Ok(SendRequest {
-                    id: 1,
+                    id: Uuid::new_v4().to_string(),
                     msg: Some(EmailMessage::new().into()),
                 }),
                 Ok(SendRequest {
-                    id: 2,
+                    id: Uuid::new_v4().to_string(),
                     msg: Some(SmsMessage::new().into()),
                 }),
                 Ok(SendRequest {
-                    id: 3,
+                    id: Uuid::new_v4().to_string(),
                     msg: Some(InAppMessage::new().into()),
                 }),
             ]

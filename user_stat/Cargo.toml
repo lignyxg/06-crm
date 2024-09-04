@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [features]
-default = []
+default = ["test-util"]
 test-util = []
 
 [dependencies]
@@ -28,7 +28,6 @@ tracing-subscriber = { workspace = true }
 
 [build-dependencies]
 anyhow = { workspace = true }
-#prost-build = { workspace = true }
 proto-builder-trait = "0.6.1"
 tonic-build = { workspace = true }
 

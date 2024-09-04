@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use chrono::{DateTime, Days, Utc};
 use fake::faker::chrono::en::DateTimeBetween;
 use fake::faker::internet::en::DomainSuffix;
@@ -8,6 +10,7 @@ use futures::{Stream, StreamExt};
 use prost_types::Timestamp;
 use rand::{thread_rng, Rng};
 use tokio::sync::mpsc;
+use tonic::codegen::tokio_stream;
 use tonic::codegen::tokio_stream::wrappers::ReceiverStream;
 use tonic::Response;
 
@@ -82,6 +85,16 @@ impl Publisher {
             name: Name().fake(),
             avatar: "https://placehold.co/600x600".to_string(),
         }
+    }
+}
+
+impl MaterializeRequest {
+    pub fn new_with_ids(ids: &[u32]) -> impl Stream<Item = MaterializeRequest> {
+        let req: HashSet<_> = ids
+            .iter()
+            .map(|id| MaterializeRequest { id: *id })
+            .collect();
+        tokio_stream::iter(req)
     }
 }
 

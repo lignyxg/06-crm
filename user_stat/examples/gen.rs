@@ -87,7 +87,7 @@ impl Dummy<UniqueEmail> for String {
         let email: String = SafeEmail().fake();
         let id = nanoid!(8, &ALPHABET);
         let i = email.find('@').unwrap();
-        format!("{}.{}@{}", &email[..i], id, &email[i + 1..])
+        format!("{}.{}@{}", &email[..i], id, &email[i..])
     }
 }
 

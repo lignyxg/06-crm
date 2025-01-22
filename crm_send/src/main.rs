@@ -17,7 +17,7 @@ async fn main() -> anyhow::Result<()> {
         .parse()
         .expect("Failed to parse address ()");
     let svc = NotificationService::new(config).into_server();
-    info!("gRPC server listening on {}", addr);
+    info!("Notification service listening on {}", addr);
 
     tonic::transport::Server::builder()
         .add_service(svc)

@@ -15,21 +15,23 @@ path = "src/client.rs"
 
 [dependencies]
 anyhow = { workspace = true }
+auth = { workspace = true }
 chrono = { workspace = true }
 crm_metadata = { workspace = true }
 crm_send = { workspace = true }
 derive_builder = { workspace = true }
+futures-util = "0.3.31"
 prost = { workspace = true }
-prost-build = { workspace = true }
-prost-types = { workspace = true }
 serde = { workspace = true }
 serde_yaml = { workspace = true }
-tokio = { workspace = true }
+tokio = { workspace = true, features = ["rt"] }
 tonic = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 user_stat = { workspace = true, features = ["test-util"] }
 uuid = { version = "1.10.0", features = ["v4"] }
+futures-core = "0.3.31"
+rand = "0.8.5"
 
 
 [build-dependencies]

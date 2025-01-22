@@ -53,9 +53,9 @@ impl NotificationService {
                 let svc_clone = svc.clone();
                 let id = req.id;
                 let resp = match req.msg {
-                    Some(Email(email)) => email.send(id, &svc_clone).await,
-                    Some(Sms(sms)) => sms.send(id, &svc_clone).await,
-                    Some(InApp(in_app)) => in_app.send(id, &svc_clone).await,
+                    Some(Email(email)) => email.send(id, svc_clone).await,
+                    Some(Sms(sms)) => sms.send(id, svc_clone).await,
+                    Some(InApp(in_app)) => in_app.send(id, svc_clone).await,
                     None => {
                         warn!("Empty request");
                         Err(Status::invalid_argument("Empty request"))
@@ -94,7 +94,7 @@ trait Sender {
     async fn send(
         self,
         msg_id: String,
-        by: &NotificationService,
+        by: NotificationService,
     ) -> Result<SendResponse, tonic::Status>;
 }
 

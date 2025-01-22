@@ -1,3 +1,4 @@
+use tonic::Status;
 use tracing::warn;
 
 use crate::abi::{to_ts, Sender};
@@ -9,12 +10,12 @@ impl Sender for SmsMessage {
     async fn send(
         self,
         msg_id: String,
-        by: &NotificationService,
+        by: NotificationService,
     ) -> Result<SendResponse, tonic::Status> {
-        let snd = by.sender_svc.clone();
-        if let Err(e) = snd.send(self.into()).await {
-            warn!("Failed to send email: {}", e);
-        };
+        by.sender_svc.send(self.into()).await.map_err(|e| {
+            warn!("Failed to send sms: {}", e);
+            Status::internal("Failed to send sms")
+        })?;
 
         Ok(SendResponse {
             id: msg_id,

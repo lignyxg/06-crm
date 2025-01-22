@@ -1,5 +1,5 @@
 [workspace]
-members = [
+members = ["auth",
     "crm", "crm_metadata", "crm_send", "user_stat",
 ]
 
@@ -7,8 +7,8 @@ resolver = "2"
 
 [workspace.dependencies]
 anyhow = "1.0.86"
+auth = { path = "./auth" }
 chrono = { version = "0.4.38", features = ["serde"] }
-crm = { path = "./crm" }
 crm_metadata = { path = "./crm_metadata" }
 crm_send = { path = "./crm_send" }
 derive_builder = "0.20.0"

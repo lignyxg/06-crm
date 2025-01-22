@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package auth;
+
+import "auth/messages.proto";
+
+service Auth {
+  rpc Sign(SignRequest) returns (SignResponse) {};
+  rpc Verify(VerifyRequest) returns (VerifyResponse) {};
+}

@@ -17,7 +17,7 @@ async fn main() -> anyhow::Result<()> {
         .parse()
         .expect("Failed to parse address ()");
     let svc = UserStatsService::new(config).await.into_server();
-    info!("gRPC server listening on {}", addr);
+    info!("User-stats service listening on {}", addr);
 
     tonic::transport::Server::builder()
         .add_service(svc)

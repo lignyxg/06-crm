@@ -1,3 +1,5 @@
+pub mod auth_interceptor;
+
 use tonic::codegen::tokio_stream::StreamExt;
 use tonic::{Response, Status};
 
@@ -15,6 +17,7 @@ impl CrmService {
         &self,
         request: WelcomeRequest,
     ) -> Result<Response<WelcomeResponse>, Status> {
+        println!("======== In welcome service =======");
         let mut user_stats_client = self.user_stats.clone();
         let users = user_stats_client
             .query(QueryRequest::new_with_interval(request.interval))

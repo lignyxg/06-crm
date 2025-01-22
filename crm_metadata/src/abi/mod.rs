@@ -23,13 +23,13 @@ impl MetadataService {
     // so use generic stream instead
     pub async fn materialize<S>(&self, mut stream: S) -> ServiceResult<ResponseStream>
     where
-        S: Stream<Item = Result<MaterializeRequest, tonic::Status>> + Send + 'static + Unpin,
+        S: Stream<Item = Result<MaterializeRequest, tonic::Status>> + Send + 'static + Unpin, // client side streaming
     {
         let (tx, rx) = mpsc::channel::<Result<Content, tonic::Status>>(CHANNEL_SIZE);
 
         tokio::spawn(async move {
             while let Some(Ok(req)) = stream.next().await {
-                // get request id from client
+                // async get request id from client
                 let id = req.id;
                 // generate dummy content
                 let content = Content::new(id);
@@ -37,7 +37,7 @@ impl MetadataService {
                 tx.send(Ok(content)).await.unwrap();
             }
         });
-
+        // wrap the receiver to stream, and return
         let ret_stream = ReceiverStream::new(rx);
         Ok(Response::new(Box::pin(ret_stream)))
     }

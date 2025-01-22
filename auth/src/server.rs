@@ -1,11 +1,11 @@
+use auth::AuthService;
+use auth::config::AppConfig;
 use tracing::info;
 use tracing::level_filters::LevelFilter;
+use tracing_subscriber::Layer as _;
 use tracing_subscriber::fmt::Layer;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
-use tracing_subscriber::Layer as _;
-
-use crm_metadata::{AppConfig, MetadataService};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -16,9 +16,8 @@ async fn main() -> anyhow::Result<()> {
     let addr = format!("[::1]:{}", config.server.port)
         .parse()
         .expect("Failed to parse address ()");
-    let svc = MetadataService::new(config).into_server();
-    info!("Metadata service listening on {}", addr);
-
+    let svc = AuthService::try_new(config)?.into_server();
+    info!("Auth service listening on {}", addr);
     tonic::transport::Server::builder()
         .add_service(svc)
         .serve(addr)

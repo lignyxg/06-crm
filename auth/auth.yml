@@ -1,7 +1,6 @@
 server:
-  port: 50003
-db_url: postgres://postgres:postgres@localhost:5432/stats
-base_url: /tmp/crm_send
+  port: 50004
+base_url: /tmp/crm_auth
 auth:
   sk: |
     -----BEGIN PRIVATE KEY-----
@@ -9,4 +8,3 @@ auth:
     Xj6L2NcLOM2ohiAzx7+/eEW5BqChRANCAAS5fd+Vmsf7iWTxi8FsqwU0dFYzvb9z
     D7aUmhYaTHZpnvO1lkjmOWcPSOJU5idmpKpyJtx4tTC9lV2Y+iXdzsHs
     -----END PRIVATE KEY-----
-

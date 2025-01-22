@@ -3,23 +3,24 @@ use std::fs::File;
 use anyhow::bail;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AppConfig {
     pub server: ServerConfig,
     pub db_url: String,
-    pub auth: AuthConfig,
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServerConfig {
     pub port: u16,
     pub metadata: String,
     pub user_stat: String,
     pub notification: String,
+    pub auth: String,
+    pub tls: Option<TlsConfig>,
 }
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct AuthConfig {
-    pub sk: String,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct TlsConfig {
+    pub cert: String,
+    pub key: String,
 }
 
 impl AppConfig {
